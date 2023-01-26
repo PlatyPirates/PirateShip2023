@@ -13,6 +13,33 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class DrivetrainConstants {
+    //according to CAN IDs
+    public static final int frontLeftMotor = 1;
+    public static int frontRightMotor = 2;
+    public static int backLeftMotor = 3;
+    public static int backRightMotor = 4;
+
+    //idk where this number came from but it's been the same for the past 2 years
+    public static final double rampRate = 0.5;
+  }
+
+  public static final class JoystickConstants {
+    //Controllers
+    public static final int DRIVER_PORT = 0;
+    public static final int OPERATOR_PORT = 1;
+
+    //XboxOne Joysticks (axes)
+    public static final int LEFT_STICK_X = 0;
+    public static final int LEFT_STICK_Y = 1;
+    public static final int LEFT_TRIGGER = 2;
+    public static final int RIGHT_TRIGGER = 3;
+    public static final int RIGHT_STICK_X = 4;
+    public static final int RIGHT_STICK_Y = 5;
+
+    public static final double deadband = 0.1;
+  }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
