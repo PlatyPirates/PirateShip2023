@@ -17,12 +17,17 @@ public final class Constants {
   public static final class DrivetrainConstants {
     //according to CAN IDs
     public static final int frontLeftMotor = 1;
-    public static int frontRightMotor = 2;
-    public static int backLeftMotor = 3;
-    public static int backRightMotor = 4;
+    public static final int frontRightMotor = 2;
+    public static final int backLeftMotor = 3;
+    public static final int backRightMotor = 4;
 
     //idk where this number came from but it's been the same for the past 2 years
     public static final double rampRate = 0.5;
+  }
+
+  public static final class IntakeConstants {
+    public static final int intakeMotor = 5;
+    public static final double intakeMotorPower = 0.5;
   }
 
   public static final class JoystickConstants {
