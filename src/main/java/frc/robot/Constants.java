@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,6 +15,40 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final class DrivetrainConstants {
+    //according to CAN IDs
+    public static final int frontLeftMotor = 1;
+    public static final int frontRightMotor = 2;
+    public static final int backLeftMotor = 3;
+    public static final int backRightMotor = 4;
+
+    //idk where this number came from but it's been the same for the past 2 years
+    public static final double rampRate = 0.5;
+    public static double kDistancePerWheelRevolutionMeters = Units.inchesToMeters(6*Math.PI);
+    public static double kGearReduction = 10.71;
+  }
+
+  public static final class IntakeConstants {
+    public static final int intakeMotor = 5;
+    public static final double intakeMotorPower = 0.5;
+  }
+
+  public static final class JoystickConstants {
+    //Controllers
+    public static final int DRIVER_PORT = 0;
+    public static final int OPERATOR_PORT = 1;
+
+    //XboxOne Joysticks (axes)
+    public static final int LEFT_STICK_X = 0;
+    public static final int LEFT_STICK_Y = 1;
+    public static final int LEFT_TRIGGER = 2;
+    public static final int RIGHT_TRIGGER = 3;
+    public static final int RIGHT_STICK_X = 4;
+    public static final int RIGHT_STICK_Y = 5;
+
+    public static final double deadband = 0.1;
+  }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
