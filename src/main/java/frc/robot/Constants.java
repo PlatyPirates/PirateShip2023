@@ -42,10 +42,14 @@ public final class Constants {
     //XboxOne Joysticks (axes)
     public static final int LEFT_STICK_X = 0;
     public static final int LEFT_STICK_Y = 1;
-    public static final int LEFT_TRIGGER = 2;
-    public static final int RIGHT_TRIGGER = 3;
     public static final int RIGHT_STICK_X = 4;
     public static final int RIGHT_STICK_Y = 5;
+
+    //XboxOne buttons
+    public static final int LEFT_TRIGGER = 2;
+    public static final int RIGHT_TRIGGER = 3;
+    public static final int BUMPER_LEFT = 6;
+    public static final int BUMPER_RIGHT = 7;
 
     public static final double deadband = 0.1;
   }

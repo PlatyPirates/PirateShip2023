@@ -4,16 +4,21 @@
 
 package frc.robot;
 
+import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeIn;
+import frc.robot.commands.IntakeOut;
+import frc.robot.subsystems.Booty_Intake;
 import frc.robot.subsystems.Drive_Train;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -31,6 +36,8 @@ public class RobotContainer {
 
   private final Drive_Train _drive_Train = new Drive_Train(_gyro);
   private final Joystick _driver = new Joystick(0);
+
+  private final Booty_Intake _bootyIntake = new Booty_Intake();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -54,6 +61,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    //new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT).whileHeld(new IntakeIn(_bootyIntake));
+    //new JoystickButton(_driver, JoystickConstants.RIGHT_TRIGGER).whileHeld(new IntakeOut(_bootyIntake));
+    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
