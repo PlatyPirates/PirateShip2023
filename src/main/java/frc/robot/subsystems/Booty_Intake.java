@@ -7,12 +7,23 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Booty_Intake extends SubsystemBase {
   private final CANSparkMax _intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotor, MotorType.kBrushed);
+
+  public enum BootyState {
+    Off,
+    CubeIntake,
+    CubeHold,
+    ConeIntake,
+    ConeHold
+  }
+
+  private BootyState _state = BootyState.Off;
 
   private double _power = Constants.IntakeConstants.intakeMotorPower;
   /** Creates a new Booty_Intake. */
@@ -44,8 +55,36 @@ public class Booty_Intake extends SubsystemBase {
     return _power;
   }
 
+  public void setState(BootyState state) {
+    _state = state;
+  }
+
   @Override
   public void periodic() {
+    int currentLimit = 25;
+
     // This method will be called once per scheduler run
+
+    if(_state == BootyState.CubeIntake) {
+      _power = 1.0;
+      currentLimit = 25;
+    } else if (_state == BootyState.ConeIntake) {
+      _power = -1.0;
+      currentLimit = 25;
+    } else if (_state == BootyState.CubeHold) {
+      _power = 0.07;
+      currentLimit = 5;
+    } else if (_state == BootyState.ConeHold) {
+      _power = -0.07;
+      currentLimit = 5;
+    } else {
+      _power = 0; 
+    }
+
+    _intakeMotor.set(_power);
+    _intakeMotor.setSmartCurrentLimit(currentLimit); 
+
+    SmartDashboard.putNumber("Intake Power", _power);
+    SmartDashboard.putString("Intake State", _state.toString()); 
   }
 }

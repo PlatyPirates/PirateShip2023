@@ -14,9 +14,11 @@ import frc.robot.commands.IntakeOut;
 import frc.robot.subsystems.Booty_Intake;
 import frc.robot.subsystems.Drive_Train;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Booty_Intake.BootyState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -61,8 +63,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT).whileHeld(new IntakeIn(_bootyIntake));
-    //new JoystickButton(_driver, JoystickConstants.RIGHT_TRIGGER).whileHeld(new IntakeOut(_bootyIntake));
+    new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT)
+      .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeIntake)))
+      .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeHold))); 
+    new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
+      .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)))
+      .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
