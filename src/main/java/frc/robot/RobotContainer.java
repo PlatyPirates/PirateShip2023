@@ -14,11 +14,14 @@ import frc.robot.commands.IntakeOut;
 import frc.robot.subsystems.Booty_Intake;
 import frc.robot.subsystems.Drive_Train;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.FourBarArms;
+import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.Booty_Intake.BootyState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -40,6 +43,8 @@ public class RobotContainer {
   private final Joystick _driver = new Joystick(0);
 
   private final Booty_Intake _bootyIntake = new Booty_Intake();
+  private final FourBarArms _fourBarArms = new FourBarArms();
+  private final IntakePivot _intakePivot = new IntakePivot(); 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -69,6 +74,10 @@ public class RobotContainer {
     new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
       .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)))
       .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
+    new JoystickButton(_driver, JoystickConstants.Y).whileTrue(new RunCommand(_fourBarArms::armOut, _fourBarArms));
+    new JoystickButton(_driver, JoystickConstants.A).whileTrue(new RunCommand(_fourBarArms::armIn, _fourBarArms));
+    new JoystickButton(_driver, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
+    new JoystickButton(_driver, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
     
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)

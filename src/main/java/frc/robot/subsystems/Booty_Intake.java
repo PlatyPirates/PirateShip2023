@@ -61,22 +61,22 @@ public class Booty_Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    int currentLimit = 25;
+    int currentLimit = 40;
 
     // This method will be called once per scheduler run
 
     if(_state == BootyState.CubeIntake) {
       _power = 1.0;
-      currentLimit = 25;
+      currentLimit = 40;
     } else if (_state == BootyState.ConeIntake) {
       _power = -1.0;
-      currentLimit = 25;
+      currentLimit = 40;
     } else if (_state == BootyState.CubeHold) {
       _power = 0.07;
-      currentLimit = 5;
+      currentLimit = 15;
     } else if (_state == BootyState.ConeHold) {
       _power = -0.07;
-      currentLimit = 5;
+      currentLimit = 15;
     } else {
       _power = 0; 
     }
@@ -86,5 +86,6 @@ public class Booty_Intake extends SubsystemBase {
 
     SmartDashboard.putNumber("Intake Power", _power);
     SmartDashboard.putString("Intake State", _state.toString()); 
+    SmartDashboard.putNumber("Intake Current", _intakeMotor.getOutputCurrent());
   }
 }
