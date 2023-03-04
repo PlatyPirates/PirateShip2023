@@ -5,17 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Booty_Intake;
+import frc.robot.subsystems.IntakePivot;
 
-public class IntakeIn extends CommandBase {
-  private final Booty_Intake _bootyIntake;
+public class PivotUp extends CommandBase {
+  private final IntakePivot _intakePivot;
 
-  /** Creates a new IntakeIn. */
-  public IntakeIn(Booty_Intake bootyIntake) {
-    _bootyIntake = bootyIntake;
+  /** Creates a new PivotUp. */
+  public PivotUp(IntakePivot intakePivot) {
+    _intakePivot = intakePivot;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_bootyIntake);
+    addRequirements(_intakePivot);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class IntakeIn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //_bootyIntake.intakeIn();
+    _intakePivot.pivotUp();
   }
 
   // Called once the command ends or is interrupted.

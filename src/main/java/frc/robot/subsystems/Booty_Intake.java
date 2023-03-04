@@ -30,7 +30,7 @@ public class Booty_Intake extends SubsystemBase {
   public Booty_Intake() {
     setDefaultCommand(new RunCommand(this::stop, this));
 
-    _intakeMotor.restoreFactoryDefaults();
+    _intakeMotor.restoreFactoryDefaults(); //this may be causing the motor controller to burn out
 
     _intakeMotor.burnFlash();
   }
@@ -39,6 +39,7 @@ public class Booty_Intake extends SubsystemBase {
     _intakeMotor.stopMotor();
   }
   
+  /*
   public void intakeIn() {
     _intakeMotor.set(_power);
   }
@@ -54,6 +55,7 @@ public class Booty_Intake extends SubsystemBase {
   public double getPower(){
     return _power;
   }
+  */
 
   public void setState(BootyState state) {
     _state = state;
@@ -87,5 +89,6 @@ public class Booty_Intake extends SubsystemBase {
     SmartDashboard.putNumber("Intake Power", _power);
     SmartDashboard.putString("Intake State", _state.toString()); 
     SmartDashboard.putNumber("Intake Current", _intakeMotor.getOutputCurrent());
+    SmartDashboard.putNumber("current limit", currentLimit);
   }
 }

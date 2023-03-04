@@ -16,7 +16,7 @@ public class IntakePivot extends SubsystemBase {
 
   private double _pivotPower = Constants.IntakeConstants.pivotMotorPower;
 
-  /** Creates a new IntakeUpDown. */
+  /** Creates a new IntakePivot. */
   public IntakePivot() {
     setDefaultCommand(new RunCommand(this::stop, this));
 

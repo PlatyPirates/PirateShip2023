@@ -9,8 +9,10 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Extend;
 import frc.robot.commands.IntakeIn;
 import frc.robot.commands.IntakeOut;
+import frc.robot.commands.Retract;
 import frc.robot.subsystems.Booty_Intake;
 import frc.robot.subsystems.Drive_Train;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -71,14 +73,18 @@ public class RobotContainer {
     new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT)
       .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeIntake)))
       .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeHold))); 
-    new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
-      .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)))
-      .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
+    //new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
+      //.onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)));
+      //.onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
+
+    //new JoystickButton(_driver, JoystickConstants.Y).onTrue(new Extend(_fourBarArms, _intakePivot));
+    //new JoystickButton(_driver, JoystickConstants.A).onTrue(new Retract(_fourBarArms, _intakePivot));
+
     new JoystickButton(_driver, JoystickConstants.Y).whileTrue(new RunCommand(_fourBarArms::armOut, _fourBarArms));
     new JoystickButton(_driver, JoystickConstants.A).whileTrue(new RunCommand(_fourBarArms::armIn, _fourBarArms));
     new JoystickButton(_driver, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_driver, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
-    
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
