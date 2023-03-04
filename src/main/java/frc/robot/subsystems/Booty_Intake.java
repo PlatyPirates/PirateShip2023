@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Booty_Intake extends SubsystemBase {
-  private final CANSparkMax _intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotor, MotorType.kBrushed);
+  private CANSparkMax _intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotor, MotorType.kBrushed);
 
   public enum BootyState {
     Off,
@@ -23,20 +23,20 @@ public class Booty_Intake extends SubsystemBase {
     ConeHold
   }
 
-  private BootyState _state = BootyState.Off;
+  public BootyState _state = BootyState.Off;
 
-  private double _power = Constants.IntakeConstants.intakeMotorPower;
+  //public double _power = Constants.IntakeConstants.intakeMotorPower;
   /** Creates a new Booty_Intake. */
   public Booty_Intake() {
-    setDefaultCommand(new RunCommand(this::stop, this));
+    //setDefaultCommand(new RunCommand(this::stop, this));
 
     _intakeMotor.restoreFactoryDefaults(); //this may be causing the motor controller to burn out
 
-    _intakeMotor.burnFlash();
+    //_intakeMotor.burnFlash();
   }
 
   public void stop() {
-    _intakeMotor.stopMotor();
+    //_intakeMotor.stopMotor();
   }
   
   /*
@@ -55,23 +55,28 @@ public class Booty_Intake extends SubsystemBase {
   public double getPower(){
     return _power;
   }
-  */
+*/
 
   public void setState(BootyState state) {
     _state = state;
   }
+  
 
   @Override
   public void periodic() {
+    double _power = 0.0;
     int currentLimit = 40;
 
     // This method will be called once per scheduler run
 
-    if(_state == BootyState.CubeIntake) {
-      _power = 1.0;
+    if(_state == BootyState.Off) {
+      _power = 0.0;
+      currentLimit = 40;
+    }else if(_state == BootyState.CubeIntake) {
+      _power =0.25;
       currentLimit = 40;
     } else if (_state == BootyState.ConeIntake) {
-      _power = -1.0;
+      _power = -0.40;
       currentLimit = 40;
     } else if (_state == BootyState.CubeHold) {
       _power = 0.07;
@@ -79,9 +84,7 @@ public class Booty_Intake extends SubsystemBase {
     } else if (_state == BootyState.ConeHold) {
       _power = -0.07;
       currentLimit = 15;
-    } else {
-      _power = 0; 
-    }
+    } 
 
     _intakeMotor.set(_power);
     _intakeMotor.setSmartCurrentLimit(currentLimit); 

@@ -73,9 +73,9 @@ public class RobotContainer {
     new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT)
       .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeIntake)))
       .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeHold))); 
-    //new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
-      //.onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)));
-      //.onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
+    new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
+      .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)))
+      .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
 
     //new JoystickButton(_driver, JoystickConstants.Y).onTrue(new Extend(_fourBarArms, _intakePivot));
     //new JoystickButton(_driver, JoystickConstants.A).onTrue(new Retract(_fourBarArms, _intakePivot));
