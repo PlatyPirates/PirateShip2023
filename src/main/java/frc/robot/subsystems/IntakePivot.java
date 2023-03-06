@@ -5,11 +5,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class IntakePivot extends SubsystemBase {
   private final CANSparkMax _pivotMotor = new CANSparkMax(Constants.IntakeConstants.pivotMotor, MotorType.kBrushless);
@@ -21,7 +25,11 @@ public class IntakePivot extends SubsystemBase {
     setDefaultCommand(new RunCommand(this::stop, this));
 
     _pivotMotor.restoreFactoryDefaults();
-
+    _pivotMotor.setIdleMode(IdleMode.kBrake);
+    _pivotMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    _pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, -IntakeConstants.pivotLimitIn);
+    _pivotMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    _pivotMotor.setSoftLimit(SoftLimitDirection.kForward, IntakeConstants.pivotLimitOut);
     _pivotMotor.burnFlash();
   }
 
@@ -44,5 +52,7 @@ public class IntakePivot extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Pivot Position", _pivotMotor.getEncoder().getPosition());
+    SmartDashboard.putNumber("Pivot Current", _pivotMotor.getOutputCurrent());
   }
 }

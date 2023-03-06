@@ -71,19 +71,19 @@ public class Booty_Intake extends SubsystemBase {
 
     if(_state == BootyState.Off) {
       _power = 0.0;
-      currentLimit = 40;
+      currentLimit = 55;
     }else if(_state == BootyState.CubeIntake) {
       _power =0.25;
-      currentLimit = 40;
+      currentLimit = 55;
     } else if (_state == BootyState.ConeIntake) {
-      _power = -0.40;
-      currentLimit = 40;
+      _power = -0.60;
+      currentLimit = 55;
     } else if (_state == BootyState.CubeHold) {
-      _power = 0.07;
-      currentLimit = 15;
+      _power = 0.10;
+      currentLimit = 20;
     } else if (_state == BootyState.ConeHold) {
-      _power = -0.07;
-      currentLimit = 15;
+      _power = -0.12;
+      currentLimit = 20;
     } 
 
     _intakeMotor.set(_power);
