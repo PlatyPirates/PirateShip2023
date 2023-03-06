@@ -6,12 +6,15 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class FourBarArms extends SubsystemBase {
   private final CANSparkMax _armMotor = new CANSparkMax(Constants.IntakeConstants.armMotor, MotorType.kBrushless);
@@ -24,7 +27,11 @@ public class FourBarArms extends SubsystemBase {
     setDefaultCommand(new RunCommand(this::stop, this));
 
     _armMotor.restoreFactoryDefaults();
-
+    _armMotor.setIdleMode(IdleMode.kBrake);
+    _armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    _armMotor.setSoftLimit(SoftLimitDirection.kReverse, IntakeConstants.armLimitIn);
+    _armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    _armMotor.setSoftLimit(SoftLimitDirection.kForward, IntakeConstants.armLimitOut);
     _armMotor.burnFlash();
   }
 
@@ -55,5 +62,6 @@ public class FourBarArms extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Position", _encoder.getPosition());
+    SmartDashboard.putNumber("Arm Current", _armMotor.getOutputCurrent());
   }
 }
