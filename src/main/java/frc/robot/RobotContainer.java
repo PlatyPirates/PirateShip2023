@@ -43,6 +43,7 @@ public class RobotContainer {
 
   private final Drive_Train _drive_Train = new Drive_Train(_gyro);
   private final Joystick _driver = new Joystick(0);
+  private final Joystick _operator = new Joystick(1);
 
   private final Booty_Intake _bootyIntake = new Booty_Intake();
   private final FourBarArms _fourBarArms = new FourBarArms();
@@ -70,20 +71,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    new JoystickButton(_driver, JoystickConstants.BUMPER_RIGHT)
+    new JoystickButton(_operator, JoystickConstants.BUMPER_RIGHT)
       .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeIntake)))
       .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.CubeHold))); 
-    new JoystickButton(_driver, JoystickConstants.BUMPER_LEFT)
+    new JoystickButton(_operator, JoystickConstants.BUMPER_LEFT)
       .onTrue(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeIntake)))
       .onFalse(new InstantCommand(() -> _bootyIntake.setState(BootyState.ConeHold)));
 
     //new JoystickButton(_driver, JoystickConstants.Y).onTrue(new Extend(_fourBarArms, _intakePivot));
     //new JoystickButton(_driver, JoystickConstants.A).onTrue(new Retract(_fourBarArms, _intakePivot));
 
-    new JoystickButton(_driver, JoystickConstants.Y).whileTrue(new RunCommand(_fourBarArms::armOut, _fourBarArms));
-    new JoystickButton(_driver, JoystickConstants.A).whileTrue(new RunCommand(_fourBarArms::armIn, _fourBarArms));
-    new JoystickButton(_driver, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
-    new JoystickButton(_driver, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
+    new JoystickButton(_operator, JoystickConstants.Y).whileTrue(new RunCommand(_fourBarArms::armOut, _fourBarArms));
+    new JoystickButton(_operator, JoystickConstants.A).whileTrue(new RunCommand(_fourBarArms::armIn, _fourBarArms));
+    new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
+    new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
