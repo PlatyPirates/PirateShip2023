@@ -27,9 +27,9 @@ public class IntakePivot extends SubsystemBase {
     _pivotMotor.restoreFactoryDefaults();
     _pivotMotor.setIdleMode(IdleMode.kBrake);
     _pivotMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    _pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, -IntakeConstants.pivotLimitIn);
+    _pivotMotor.setSoftLimit(SoftLimitDirection.kReverse, -IntakeConstants.pivotLimitOut);
     _pivotMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    _pivotMotor.setSoftLimit(SoftLimitDirection.kForward, IntakeConstants.pivotLimitOut);
+    _pivotMotor.setSoftLimit(SoftLimitDirection.kForward, IntakeConstants.pivotLimitIn);
     _pivotMotor.burnFlash();
   }
 
