@@ -46,7 +46,7 @@ public final class Constants {
     public static final double armMotorPower = 0.2;
 
     public static final float pivotLimitIn = 0.0f;
-    public static final float pivotLimitOut = 26.0f; // this will be negated in the subsystem because negative means out
+    public static final float pivotLimitOut = 28.0f; // this will be negated in the subsystem because negative means out
     public static final float armLimitIn = 0.0f;
     public static final float armLimitOut = 9.5f; // this will remain positive in the subsystem because positive means out
   }
