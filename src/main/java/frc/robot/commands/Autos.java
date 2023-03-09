@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.subsystems.Drive_Train;
-import frc.robot.subsystems.ExampleSubsystem;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -21,17 +20,23 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
-  /** Example static factory for an autonomous command. */
-  public static CommandBase exampleAuto(ExampleSubsystem subsystem) {
-    return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
-  }
 
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
   }
   public static CommandBase TestStraight(Drive_Train driveTrain)
   {
-    PathPlannerTrajectory path = PathPlanner.loadPath("Test Stright", new PathConstraints(1, 1));
+    return GeneratePath(driveTrain, "test stright");
+  }
+
+  public static CommandBase TestCurve(Drive_Train driveTrain)
+  {
+    return GeneratePath(driveTrain, "test curv");
+  }
+
+  private static CommandBase GeneratePath(Drive_Train driveTrain, String pathName)
+  {
+    PathPlannerTrajectory path = PathPlanner.loadPath(pathName, new PathConstraints(0.5, 0.5));
     PPRamseteCommand ramseteCommand =
         new PPRamseteCommand(
             path,

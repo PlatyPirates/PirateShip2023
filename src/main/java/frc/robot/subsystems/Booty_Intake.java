@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Booty_Intake extends SubsystemBase {
-  private CANSparkMax _intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotor, MotorType.kBrushed);
+  private CANSparkMax _intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotor, MotorType.kBrushless);
 
   public enum BootyState {
     Off,
@@ -30,9 +31,10 @@ public class Booty_Intake extends SubsystemBase {
   public Booty_Intake() {
     //setDefaultCommand(new RunCommand(this::stop, this));
 
-    _intakeMotor.restoreFactoryDefaults(); //this may be causing the motor controller to burn out
+    _intakeMotor.restoreFactoryDefaults(); 
+    _intakeMotor.setIdleMode(IdleMode.kBrake);
+    _intakeMotor.burnFlash();
 
-    //_intakeMotor.burnFlash();
   }
 
   public void stop() {
@@ -65,25 +67,25 @@ public class Booty_Intake extends SubsystemBase {
   @Override
   public void periodic() {
     double _power = 0.0;
-    int currentLimit = 40;
+    int currentLimit = 25;
 
     // This method will be called once per scheduler run
 
     if(_state == BootyState.Off) {
       _power = 0.0;
-      currentLimit = 55;
+      currentLimit = 25;
     }else if(_state == BootyState.CubeIntake) {
-      _power =0.25;
-      currentLimit = 55;
+      _power = 0.30;
+      currentLimit = 25;
     } else if (_state == BootyState.ConeIntake) {
       _power = -0.60;
-      currentLimit = 55;
+      currentLimit = 25;
     } else if (_state == BootyState.CubeHold) {
-      _power = 0.10;
-      currentLimit = 20;
+      _power = 0.0;
+      currentLimit = 5;
     } else if (_state == BootyState.ConeHold) {
-      _power = -0.12;
-      currentLimit = 20;
+      _power = -0.07;
+      currentLimit = 5;
     } 
 
     _intakeMotor.set(_power);

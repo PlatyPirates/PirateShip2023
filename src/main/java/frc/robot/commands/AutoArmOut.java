@@ -32,8 +32,8 @@ public class AutoArmOut extends CommandBase {
   @Override
   public void execute() {
       double min_command = 0.1;
-      double error = 0 - _fourBarArms.getPosition();
-      double pidOut = _PID.calculate(error, 0); //replace 0 with arm out position
+      double error = 9.5 - _fourBarArms.getPosition();
+      double pidOut = _PID.calculate(error, 9.5); //replace 0 with arm out position (from limit)
 
       if(Math.abs(pidOut) < min_command) pidOut = Math.copySign(min_command, pidOut);
       _fourBarArms.go(pidOut); //adjust for units (ticks vs percent for power)
@@ -49,7 +49,7 @@ public class AutoArmOut extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double error = 0 - _fourBarArms.getPosition();
+    double error = 9.5 - _fourBarArms.getPosition(); // from limit
     if(Math.abs(error) < 5) //change 5
       _count++;
     else

@@ -8,19 +8,19 @@ import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Extend;
 import frc.robot.commands.IntakeIn;
 import frc.robot.commands.IntakeOut;
 import frc.robot.commands.Retract;
 import frc.robot.subsystems.Booty_Intake;
 import frc.robot.subsystems.Drive_Train;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FourBarArms;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.Booty_Intake.BootyState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,7 +36,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   //idk about this one
   private final ADIS16470_IMU _gyro = new ADIS16470_IMU();
@@ -49,6 +48,9 @@ public class RobotContainer {
   private final FourBarArms _fourBarArms = new FourBarArms();
   private final IntakePivot _intakePivot = new IntakePivot(); 
 
+  private SendableChooser<String> _chooser = new SendableChooser<String>();
+  private String _autoSelected;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -59,6 +61,11 @@ public class RobotContainer {
     configureBindings();
 
     _drive_Train.setDefaultCommand(new ArcadeDrive(_drive_Train, _driver));
+
+    _chooser.setDefaultOption("Test Straight", "test stright");
+    _chooser.addOption("Test Curve", "test curv");
+    SmartDashboard.putData("Auto choices", _chooser);
+
   }
 
   /**
@@ -86,13 +93,8 @@ public class RobotContainer {
     new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
 
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(Autos.TestStraight(_drive_Train));
+    new JoystickButton(_driver, JoystickConstants.LOGO_RIGHT).onTrue(Autos.TestCurve(_drive_Train));
   }
 
   /**
@@ -101,7 +103,16 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    _autoSelected = _chooser.getSelected();
+    System.out.println("Auto selected: " + _autoSelected);
+
+    _drive_Train.encoderReset();
+
+    if (_autoSelected == "test stright") {
+      return Autos.TestStraight(_drive_Train);
+    } else {
+      return null;
+    }
+
   }
 }

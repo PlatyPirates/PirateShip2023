@@ -103,7 +103,7 @@ public class Drive_Train extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    _pose = _odometry.update(Rotation2d.fromDegrees(_gyro.getAngle()), -_leftEncoder.getPosition(), -_rightEncoder.getPosition());
+    _pose = _odometry.update(Rotation2d.fromDegrees(_gyro.getAngle()), _leftEncoder.getPosition(), _rightEncoder.getPosition());
   }
 
   public void encoderReset() {
@@ -128,9 +128,9 @@ public class Drive_Train extends SubsystemBase {
   
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     //may need to be inverted
-    _fLMotor.setVoltage(leftVolts);
-    _fRMotor.setVoltage(rightVolts);
-    _bLMotor.setVoltage(leftVolts);
-    _bRMotor.setVoltage(rightVolts);
+    _fLMotor.setVoltage(-leftVolts);
+    _fRMotor.setVoltage(-rightVolts);
+    _bLMotor.setVoltage(-leftVolts);
+    _bRMotor.setVoltage(-rightVolts);
   }
 }
