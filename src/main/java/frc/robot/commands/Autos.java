@@ -24,35 +24,36 @@ public final class Autos {
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
   }
-  public static CommandBase TestStraight(Drive_Train driveTrain)
-  {
+
+  public static CommandBase TestStraight(Drive_Train driveTrain) {
     return GeneratePath(driveTrain, "test stright");
+
   }
 
-  public static CommandBase TestCurve(Drive_Train driveTrain)
-  {
+  public static CommandBase TestCurve(Drive_Train driveTrain) {
     return GeneratePath(driveTrain, "test curv");
   }
 
-  private static CommandBase GeneratePath(Drive_Train driveTrain, String pathName)
-  {
+  public static CommandBase DriveForward(Drive_Train driveTrain) {
+    return new DriveForward(driveTrain);
+  }
+
+  private static CommandBase GeneratePath(Drive_Train driveTrain, String pathName) {
     PathPlannerTrajectory path = PathPlanner.loadPath(pathName, new PathConstraints(0.5, 0.5));
-    PPRamseteCommand ramseteCommand =
-        new PPRamseteCommand(
-            path,
-            driveTrain::getPose,
-            new RamseteController(DrivetrainConstants.kRamseteB, DrivetrainConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(
-                DrivetrainConstants.ksVolts,
-                DrivetrainConstants.kvVoltSecondsPerMeter,
-                DrivetrainConstants.kaVoltSecondsSquaredPerMeter),
-            DrivetrainConstants.kDriveKinematics,
-            driveTrain::getWheelSpeeds,
-            new PIDController(DrivetrainConstants.kPDriveVel, 0, 0),
-            new PIDController(DrivetrainConstants.kPDriveVel, 0, 0),
-            driveTrain::tankDriveVolts,
-            driveTrain);
-          return ramseteCommand;
+    PPRamseteCommand ramseteCommand = new PPRamseteCommand(
+        path,
+        driveTrain::getPose,
+        new RamseteController(DrivetrainConstants.kRamseteB, DrivetrainConstants.kRamseteZeta),
+        new SimpleMotorFeedforward(
+            DrivetrainConstants.ksVolts,
+            DrivetrainConstants.kvVoltSecondsPerMeter,
+            DrivetrainConstants.kaVoltSecondsSquaredPerMeter),
+        DrivetrainConstants.kDriveKinematics,
+        driveTrain::getWheelSpeeds,
+        new PIDController(DrivetrainConstants.kPDriveVel, 0, 0),
+        new PIDController(DrivetrainConstants.kPDriveVel, 0, 0),
+        driveTrain::tankDriveVolts,
+        driveTrain);
+    return ramseteCommand;
   }
 }
-

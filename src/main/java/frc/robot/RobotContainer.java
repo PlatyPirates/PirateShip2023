@@ -62,8 +62,11 @@ public class RobotContainer {
 
     _drive_Train.setDefaultCommand(new ArcadeDrive(_drive_Train, _driver));
 
-    _chooser.setDefaultOption("Test Straight", "test stright");
-    _chooser.addOption("Test Curve", "test curv");
+   // _chooser.setDefaultOption("Test Straight", "test stright");
+   // _chooser.addOption("Test Curve", "test curv");
+    _chooser.setDefaultOption("Drive forward", "drive forward");
+    _chooser.addOption("Do nothing", "do nothing");
+
     SmartDashboard.putData("Auto choices", _chooser);
 
   }
@@ -108,8 +111,8 @@ public class RobotContainer {
 
     _drive_Train.encoderReset();
 
-    if (_autoSelected == "test stright") {
-      return Autos.TestStraight(_drive_Train);
+    if (_autoSelected == "drive forward") {
+      return Autos.DriveForward(_drive_Train);
     } else {
       return null;
     }

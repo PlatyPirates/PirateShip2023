@@ -92,7 +92,9 @@ public class Drive_Train extends SubsystemBase {
     //might need to be inverted
     _drive.arcadeDrive(forward, turn);
   }
-
+public void drive(double forward, double turn){
+  _drive.arcadeDrive(forward, turn);
+}
   private double applyDeadband(double value) {
     if(Math.abs(value) < JoystickConstants.deadband)
       return 0.0;
