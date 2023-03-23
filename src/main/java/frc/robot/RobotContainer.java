@@ -7,6 +7,9 @@ package frc.robot;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.AutoIntakeOut;
+import frc.robot.commands.AutoPivotUp;
+import frc.robot.commands.AutoSpitAndMove;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Extend;
 import frc.robot.commands.IntakeIn;
@@ -65,6 +68,7 @@ public class RobotContainer {
    // _chooser.setDefaultOption("Test Straight", "test stright");
    // _chooser.addOption("Test Curve", "test curv");
     _chooser.setDefaultOption("Drive forward", "drive forward");
+    _chooser.addOption("SpitAndMove", "SpitAndMove");
     _chooser.addOption("Do nothing", "do nothing");
 
     SmartDashboard.putData("Auto choices", _chooser);
@@ -96,8 +100,8 @@ public class RobotContainer {
     new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
 
-    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(Autos.TestStraight(_drive_Train));
-    new JoystickButton(_driver, JoystickConstants.LOGO_RIGHT).onTrue(Autos.TestCurve(_drive_Train));
+    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(new AutoIntakeOut(_bootyIntake));
+    new JoystickButton(_driver, JoystickConstants.LOGO_RIGHT).onTrue(new AutoPivotUp(_intakePivot));
   }
 
   /**
@@ -113,9 +117,12 @@ public class RobotContainer {
 
     if (_autoSelected == "drive forward") {
       return Autos.DriveForward(_drive_Train);
-    } else {
+    } 
+    else if(_autoSelected == "SpitAndMove"){
+      return new AutoSpitAndMove(_drive_Train, _intakePivot, _bootyIntake);
+    }
+    else {
       return null;
     }
-
   }
 }

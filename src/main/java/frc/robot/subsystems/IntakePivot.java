@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,6 +21,8 @@ public class IntakePivot extends SubsystemBase {
 
   private double _pivotPower = Constants.IntakeConstants.pivotMotorPower;
 
+  private RelativeEncoder _encoder;
+
   /** Creates a new IntakePivot. */
   public IntakePivot() {
     setDefaultCommand(new RunCommand(this::stop, this));
@@ -31,22 +34,31 @@ public class IntakePivot extends SubsystemBase {
     _pivotMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     _pivotMotor.setSoftLimit(SoftLimitDirection.kForward, IntakeConstants.pivotLimitIn);
     _pivotMotor.burnFlash();
+
+    _encoder = _pivotMotor.getEncoder();
   }
 
   public void stop() {
     _pivotMotor.stopMotor();
+    SmartDashboard.putString("Pivot action", "stop");
   }
 
   public void pivotUp() {
     _pivotMotor.set(-_pivotPower);
+    SmartDashboard.putString("Pivot action", "up");
   }
 
   public void pivotDown() {
     _pivotMotor.set(_pivotPower); 
+    SmartDashboard.putString("Pivot action", "down");
   }
 
   public void setArmPower (double pivotPower) {
     _pivotPower = pivotPower; 
+  }
+
+  public double getPosition (){
+    return _encoder.getPosition();
   }
 
   @Override
