@@ -10,14 +10,12 @@ import frc.robot.subsystems.Drive_Train;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public final class Autos {
 
@@ -26,12 +24,12 @@ public final class Autos {
   }
 
   public static CommandBase TestStraight(Drive_Train driveTrain) {
-    return GeneratePath(driveTrain, "test stright");
+    return GeneratePath(driveTrain, "Test Straight");
 
   }
 
   public static CommandBase TestCurve(Drive_Train driveTrain) {
-    return GeneratePath(driveTrain, "test curv");
+    return GeneratePath(driveTrain, "Test Curve");
   }
 
   public static CommandBase DriveForward(Drive_Train driveTrain) {
@@ -54,6 +52,7 @@ public final class Autos {
         new PIDController(DrivetrainConstants.kPDriveVel, 0, 0),
         driveTrain::tankDriveVolts,
         driveTrain);
+    driveTrain.resetOdometry(path.getInitialPose());
     return ramseteCommand;
   }
 }

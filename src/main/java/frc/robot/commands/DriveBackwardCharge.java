@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive_Train;
 
-public class DriveBackward extends CommandBase {
+public class DriveBackwardCharge extends CommandBase {
   private final Drive_Train _driveTrain;
-private long _startTime;
+  private long _startTime;
   /** Creates a new DriveForward. */
-  public DriveBackward(Drive_Train driveTrain) {
+  public DriveBackwardCharge(Drive_Train driveTrain) {
     _driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_driveTrain);
@@ -40,6 +40,6 @@ private long _startTime;
   public boolean isFinished() {
     long elapsedTime = System.currentTimeMillis()-_startTime;
 
-    return (elapsedTime > 3500);
+    return (elapsedTime > 3250);
     }
 }

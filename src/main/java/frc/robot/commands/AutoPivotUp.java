@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.IntakePivot;
 
 public class AutoPivotUp extends CommandBase {
@@ -35,6 +34,6 @@ public class AutoPivotUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (_intakePivot.getPosition()<=-IntakeConstants.pivotLimitOut);
+    return (_intakePivot.getPosition() <= -8);
   }
 }

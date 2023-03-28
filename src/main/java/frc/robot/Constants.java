@@ -25,7 +25,7 @@ public final class Constants {
     public static final int backRightMotor = 4;
 
     //idk where this number came from but it's been the same for the past 2 years
-    public static final double rampRate = 0.75;
+    public static final double rampRate = 0.5;
     public static double kDistancePerWheelRevolutionMeters = Units.inchesToMeters(6*Math.PI);
     public static double kGearReduction = 10.71;
     public static double ksVolts = 0.15239;

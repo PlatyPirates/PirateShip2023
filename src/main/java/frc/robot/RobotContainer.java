@@ -5,22 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.JoystickConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.AutoIntakeOut;
-import frc.robot.commands.AutoPivotUp;
-import frc.robot.commands.AutoSpitAndMove;
-import frc.robot.commands.Autos;
-import frc.robot.commands.Extend;
-import frc.robot.commands.IntakeIn;
-import frc.robot.commands.IntakeOut;
-import frc.robot.commands.Retract;
-import frc.robot.subsystems.Booty_Intake;
-import frc.robot.subsystems.Drive_Train;
-import frc.robot.subsystems.FourBarArms;
-import frc.robot.subsystems.IntakePivot;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.Booty_Intake.BootyState;
-import edu.wpi.first.wpilibj.ADIS16470_IMU;
+
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,7 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   //idk about this one
-  private final ADIS16470_IMU _gyro = new ADIS16470_IMU();
+  private final AHRS _gyro = new AHRS();
 
   private final Drive_Train _drive_Train = new Drive_Train(_gyro);
   private final Joystick _driver = new Joystick(0);
@@ -54,10 +44,6 @@ public class RobotContainer {
   private SendableChooser<String> _chooser = new SendableChooser<String>();
   private String _autoSelected;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -65,8 +51,8 @@ public class RobotContainer {
 
     _drive_Train.setDefaultCommand(new ArcadeDrive(_drive_Train, _driver));
 
-   // _chooser.setDefaultOption("Test Straight", "test stright");
-   // _chooser.addOption("Test Curve", "test curv");
+    _chooser.setDefaultOption("Test Straight", "Test Straight");
+    _chooser.addOption("Test Curve", "Test Curve");
     _chooser.setDefaultOption("Drive forward", "drive forward");
     _chooser.addOption("SpitAndMove", "SpitAndMove");
     _chooser.addOption("Do nothing", "do nothing");
@@ -100,8 +86,7 @@ public class RobotContainer {
     new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
 
-    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(new AutoIntakeOut(_bootyIntake));
-    new JoystickButton(_driver, JoystickConstants.LOGO_RIGHT).onTrue(new AutoPivotUp(_intakePivot));
+    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(new Stabilize(_drive_Train, _gyro));
   }
 
   /**
@@ -114,12 +99,21 @@ public class RobotContainer {
     System.out.println("Auto selected: " + _autoSelected);
 
     _drive_Train.encoderReset();
+    _drive_Train.resetHeading();
 
     if (_autoSelected == "drive forward") {
       return Autos.DriveForward(_drive_Train);
     } 
     else if(_autoSelected == "SpitAndMove"){
-      return new AutoSpitAndMove(_drive_Train, _intakePivot, _bootyIntake);
+      return new AutoSpitAndMove(_drive_Train, _intakePivot);
+    }
+    else if(_autoSelected == "Test Straight"){
+      SmartDashboard.putString("Auto Choice", _autoSelected);
+      return Autos.TestStraight(_drive_Train);
+    }
+    else if(_autoSelected == "Test Curve"){
+      SmartDashboard.putString("Auto Choice", _autoSelected);
+      return Autos.TestCurve(_drive_Train);
     }
     else {
       return null;
