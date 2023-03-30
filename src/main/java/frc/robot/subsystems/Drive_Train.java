@@ -115,6 +115,9 @@ public class Drive_Train extends SubsystemBase {
     SmartDashboard.putNumber("Right Encoder", -_rightEncoder.getPosition());
 
     SmartDashboard.putNumber("Angle", -_gyro.getAngle());
+    SmartDashboard.putNumber("Pitch", _gyro.getPitch());
+    SmartDashboard.putNumber("Roll", _gyro.getRoll());
+    SmartDashboard.putNumber("Yaw", _gyro.getYaw());
   }
 
   public void encoderReset() {
@@ -128,6 +131,10 @@ public class Drive_Train extends SubsystemBase {
 
   public Pose2d getPose() {
     return _pose;
+  }
+
+  public double getPosition() {
+    return -_leftEncoder.getPosition();
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {

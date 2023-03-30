@@ -56,6 +56,7 @@ public class RobotContainer {
     _chooser.setDefaultOption("Drive forward", "drive forward");
     _chooser.addOption("SpitAndMove", "SpitAndMove");
     _chooser.addOption("Do nothing", "do nothing");
+    _chooser.addOption("SpitAndBalanced", "SpitAndBalanced");
 
     SmartDashboard.putData("Auto choices", _chooser);
 
@@ -86,7 +87,13 @@ public class RobotContainer {
     new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
 
-    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(new Stabilize(_drive_Train, _gyro));
+    /*
+    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(
+      new AutoPivotUp(_intakePivot)
+      .andThen(new AutoPivotDown(_intakePivot))
+      .andThen(new DriveBackwardCharge(_drive_Train)
+      .andThen((new StabilizePID(_drive_Train, _gyro).alongWith(new ArmHold(_fourBarArms))))));
+    */
   }
 
   /**
@@ -97,6 +104,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     _autoSelected = _chooser.getSelected();
     System.out.println("Auto selected: " + _autoSelected);
+    SmartDashboard.putString("Auto Choice", _autoSelected);
 
     _drive_Train.encoderReset();
     _drive_Train.resetHeading();
@@ -108,12 +116,16 @@ public class RobotContainer {
       return new AutoSpitAndMove(_drive_Train, _intakePivot);
     }
     else if(_autoSelected == "Test Straight"){
-      SmartDashboard.putString("Auto Choice", _autoSelected);
       return Autos.TestStraight(_drive_Train);
     }
     else if(_autoSelected == "Test Curve"){
-      SmartDashboard.putString("Auto Choice", _autoSelected);
       return Autos.TestCurve(_drive_Train);
+    }
+    else if(_autoSelected == "SpitAndBalanced"){
+      return new AutoPivotUp(_intakePivot)
+      .andThen(new AutoPivotDown(_intakePivot))
+      .andThen(new DriveBackwardCharge(_drive_Train)
+      .andThen((new StabilizePID(_drive_Train, _gyro).alongWith(new ArmHold(_fourBarArms)))));
     }
     else {
       return null;

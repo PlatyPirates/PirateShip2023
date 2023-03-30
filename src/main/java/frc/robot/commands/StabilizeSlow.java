@@ -4,43 +4,53 @@
 
 package frc.robot.commands;
 
+import javax.lang.model.util.ElementScanner14;
+
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive_Train;
 
-public class DriveBackwardCharge extends CommandBase {
-  private final Drive_Train _driveTrain;
+public class StabilizeSlow extends CommandBase {
 
-  /** Creates a new DriveForward. */
-  public DriveBackwardCharge(Drive_Train driveTrain) {
-    _driveTrain = driveTrain;
+  private final Drive_Train _drive_Train;
+  private final AHRS _gyro;
+
+  /** Creates a new StabilizeSlow. */
+  public StabilizeSlow(Drive_Train drive_Train, AHRS gyro) {
+    _drive_Train = drive_Train;
+    _gyro = gyro;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(_driveTrain);
+    addRequirements(_drive_Train);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    _driveTrain.encoderReset();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _driveTrain.drive(0.5, 0);
+    double power = 0.34;
+    double angle = 10; 
+
+    if (_gyro.getRoll() > angle) {
+      _drive_Train.drive(-power, 0);
+    } else if (_gyro.getRoll() < -angle) {
+      _drive_Train.drive(power, 0);
+    } else {
+      _drive_Train.drive(0, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    _driveTrain.drive(0,0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double position = _driveTrain.getPosition();
-    if (position <= -1.65) return true;
-
     return false;
-    }
+  }
 }
