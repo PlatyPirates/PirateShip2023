@@ -4,16 +4,19 @@
 
 package frc.robot;
 
-import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Booty_Intake.BootyState;
+import frc.robot.subsystems.LEDStrip.LED_MODE;
+import frc.robot.util.Settings;
 
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -51,15 +54,14 @@ public class RobotContainer {
 
     _drive_Train.setDefaultCommand(new ArcadeDrive(_drive_Train, _driver));
 
-    _chooser.setDefaultOption("Test Straight", "Test Straight");
-    _chooser.addOption("Test Curve", "Test Curve");
-    _chooser.setDefaultOption("Drive forward", "drive forward");
-    _chooser.addOption("SpitAndMove", "SpitAndMove");
-    _chooser.addOption("Do nothing", "do nothing");
-    _chooser.addOption("SpitAndBalanced", "SpitAndBalanced");
+    _chooser.setDefaultOption("Nothing", "do nothing");
+    // _chooser.setDefaultOption("Test Straight", "Test Straight");
+    // _chooser.addOption("Test Curve", "Test Curve");
+    // _chooser.setDefaultOption("Drive forward", "drive forward");
+    _chooser.addOption("Move", "SpitAndMove");
+    _chooser.addOption("Balance", "SpitAndBalanced");
 
     SmartDashboard.putData("Auto choices", _chooser);
-
   }
 
   /**
@@ -86,14 +88,6 @@ public class RobotContainer {
     new JoystickButton(_operator, JoystickConstants.A).whileTrue(new RunCommand(_fourBarArms::armIn, _fourBarArms));
     new JoystickButton(_operator, JoystickConstants.X).whileTrue(new RunCommand(_intakePivot::pivotUp, _intakePivot));
     new JoystickButton(_operator, JoystickConstants.B).whileTrue(new RunCommand(_intakePivot::pivotDown, _intakePivot));
-
-    /*
-    new JoystickButton(_driver, JoystickConstants.LOGO_LEFT).onTrue(
-      new AutoPivotUp(_intakePivot)
-      .andThen(new AutoPivotDown(_intakePivot))
-      .andThen(new DriveBackwardCharge(_drive_Train)
-      .andThen((new StabilizePID(_drive_Train, _gyro).alongWith(new ArmHold(_fourBarArms))))));
-    */
   }
 
   /**
@@ -125,10 +119,39 @@ public class RobotContainer {
       return new AutoPivotUp(_intakePivot)
       .andThen(new AutoPivotDown(_intakePivot))
       .andThen(new DriveBackwardCharge(_drive_Train)
-      .andThen((new StabilizePID(_drive_Train, _gyro).alongWith(new ArmHold(_fourBarArms)))));
+      .andThen((new StabilizePID(_drive_Train, _gyro).alongWith(new ArmIn(_fourBarArms)))));
     }
     else {
       return null;
     }
+  }
+
+  public void loadSettings() {
+    _drive_Train.setBalancePID(
+      Settings.loadDouble("Balance", "P", DrivetrainConstants.balancePID.getP()),
+      Settings.loadDouble("Balance", "I", DrivetrainConstants.balancePID.getI()),
+      Settings.loadDouble("Balance", "D", DrivetrainConstants.balancePID.getD())
+    );
+
+    _drive_Train.setBalancePowerMin(
+      Settings.loadDouble("Balance", "Min", DrivetrainConstants.balancePowerMin)
+    );
+
+    _drive_Train.setBalancePowerMax(
+      Settings.loadDouble("Balance", "Max", DrivetrainConstants.balancePowerMax)
+    );
+
+    _drive_Train.setBalanceDistance(
+      Settings.loadDouble("Balance", "Distance", DrivetrainConstants.balanceDistance)
+    );
+  }  
+
+  public void saveSettings(){
+    Settings.saveDouble("Balance", "P", _drive_Train.getBalancePID().getP());
+    Settings.saveDouble("Balance", "I", _drive_Train.getBalancePID().getI());
+    Settings.saveDouble("Balance", "D", _drive_Train.getBalancePID().getD());
+    Settings.saveDouble("Balance", "Min", _drive_Train.getBalancePowerMin());
+    Settings.saveDouble("Balance", "Max", _drive_Train.getBalancePowerMax());
+    Settings.saveDouble("Balance", "Distance", _drive_Train.getBalanceDistance());
   }
 }

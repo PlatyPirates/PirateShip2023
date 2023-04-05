@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.util.PIDGains;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -35,6 +36,11 @@ public final class Constants {
     public static DifferentialDriveKinematics kDriveKinematics=new DifferentialDriveKinematics(Units.inchesToMeters(22));
     public static double kRamseteB = 2.0;
     public static double kRamseteZeta = 0.7;
+
+    public static PIDGains balancePID = new PIDGains(0.33, 0.0, 0.01);
+    public static double balancePowerMin = 0.1;
+    public static double balancePowerMax = 0.35;
+    public static double balanceDistance = 1.65;
   }
 
   public static final class IntakeConstants {

@@ -16,10 +16,9 @@ public class StabilizePID extends CommandBase {
   private Drive_Train _driveTrain;
   private AHRS _gyro;
 
-  private final double _Kp = 0.4;
-  private final double _Ki = 0.0;
-  private final double _Kd = 0.01;
-  private PIDController _pid = new PIDController(_Kp, _Ki, _Kd);
+  private PIDController _pid;
+  private double _minPower;
+  private double _maxPower;
 
   /** Creates a new Stabilize. */
   public StabilizePID(Drive_Train driveTrain, AHRS gyro) {
@@ -32,29 +31,34 @@ public class StabilizePID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _pid = new PIDController(
+      _driveTrain.getBalancePID().getP(),
+      _driveTrain.getBalancePID().getI(),
+      _driveTrain.getBalancePID().getD()
+    );
+
+    _minPower = _driveTrain.getBalancePowerMin();
+    _maxPower = _driveTrain.getBalancePowerMax(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double error = _gyro.getRoll();
-    SmartDashboard.putNumber("Error", error);
+    SmartDashboard.putNumber("Stabilize Err", error);
     double pidOut = _pid.calculate(error, 0);
-    SmartDashboard.putNumber("PID Out", pidOut);
+    SmartDashboard.putNumber("Stabilize PIDOut", pidOut);
 
-    double minPower = 0.10;
-    double maxPower = 0.35; 
-
-    double drivePower = -pidOut / 15;
-    SmartDashboard.putNumber("Drive Power", drivePower);
-    if (Math.abs(drivePower) > maxPower) {
-      drivePower = Math.copySign(maxPower, drivePower);
+    double drivePower = pidOut / 15;
+    SmartDashboard.putNumber("Stabilize Power", drivePower);
+    if (Math.abs(drivePower) > _maxPower) {
+      drivePower = Math.copySign(_maxPower, drivePower);
     }
-    else if (Math.abs(drivePower) < minPower) {
-      drivePower = Math.copySign(minPower, drivePower);
+    else if (Math.abs(drivePower) < _minPower) {
+      drivePower = Math.copySign(_minPower, drivePower);
     }
     if (Math.abs(error) > 9) {
-      _driveTrain.drive(-drivePower, 0);
+      _driveTrain.drive(drivePower, 0);
     } else {
       _driveTrain.drive(0, 0);
     }

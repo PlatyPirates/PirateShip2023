@@ -15,11 +15,12 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.JoystickConstants;
+import frc.robot.util.PIDGains;
+import frc.robot.util.Settings;
 
 public class Drive_Train extends SubsystemBase {
 
@@ -39,6 +40,11 @@ public class Drive_Train extends SubsystemBase {
   private DifferentialDriveOdometry _odometry;
 
   private Pose2d _pose;
+
+  private PIDGains _balancePID = DrivetrainConstants.balancePID;
+  private double _balancePowerMin = DrivetrainConstants.balancePowerMin;
+  private double _balancePowerMax = DrivetrainConstants.balancePowerMax;
+  private double _balanceDistance = DrivetrainConstants.balanceDistance;
 
   public Drive_Train(AHRS gyro) {
 
@@ -111,13 +117,20 @@ public class Drive_Train extends SubsystemBase {
     // This method will be called once per scheduler run
     _pose = _odometry.update(Rotation2d.fromDegrees(-_gyro.getAngle()), -_leftEncoder.getPosition(), -_rightEncoder.getPosition());
 
-    SmartDashboard.putNumber("Left Encoder", -_leftEncoder.getPosition());
-    SmartDashboard.putNumber("Right Encoder", -_rightEncoder.getPosition());
+    // SmartDashboard.putNumber("Left Encoder", -_leftEncoder.getPosition());
+    // SmartDashboard.putNumber("Right Encoder", -_rightEncoder.getPosition());
 
-    SmartDashboard.putNumber("Angle", -_gyro.getAngle());
-    SmartDashboard.putNumber("Pitch", _gyro.getPitch());
-    SmartDashboard.putNumber("Roll", _gyro.getRoll());
-    SmartDashboard.putNumber("Yaw", _gyro.getYaw());
+    // SmartDashboard.putNumber("Angle", -_gyro.getAngle());
+    // SmartDashboard.putNumber("Pitch", _gyro.getPitch());
+    // SmartDashboard.putNumber("Roll", _gyro.getRoll());
+    // SmartDashboard.putNumber("Yaw", _gyro.getYaw());
+
+    _balancePID.setP(Settings.getLiveDouble("Balance", "P", DrivetrainConstants.balancePID.getP()));
+    _balancePID.setI(Settings.getLiveDouble("Balance", "I", DrivetrainConstants.balancePID.getI()));
+    _balancePID.setD(Settings.getLiveDouble("Balance", "D", DrivetrainConstants.balancePID.getD()));
+    _balancePowerMin = Settings.getLiveDouble("Balance", "Min", DrivetrainConstants.balancePowerMin);
+    _balancePowerMax = Settings.getLiveDouble("Balance", "Max", DrivetrainConstants.balancePowerMax);
+    _balanceDistance = Settings.getLiveDouble("Balance", "Distsance", DrivetrainConstants.balanceDistance);
   }
 
   public void encoderReset() {
@@ -154,5 +167,39 @@ public class Drive_Train extends SubsystemBase {
     _fRMotor.setVoltage(-rightVolts);
     _bLMotor.setVoltage(-leftVolts);
     _bRMotor.setVoltage(-rightVolts);
+  }
+
+  public void setBalancePID(double p, double i, double d) {
+    _balancePID.setP(p);
+    _balancePID.setI(i);
+    _balancePID.setD(d);
+  }
+
+  public PIDGains getBalancePID() {
+    return _balancePID;
+  }
+
+  public void setBalancePowerMin(double power) {
+    _balancePowerMin = power;
+  }
+
+  public void setBalancePowerMax(double power) {
+    _balancePowerMax = power;
+  }
+
+  public double getBalancePowerMin() {
+      return _balancePowerMin;
+  }
+
+  public double getBalancePowerMax() {
+      return _balancePowerMax;
+  }
+
+  public void setBalanceDistance(double distance) {
+    _balanceDistance = distance;
+  }
+
+  public double getBalanceDistance() {
+    return _balanceDistance;
   }
 }

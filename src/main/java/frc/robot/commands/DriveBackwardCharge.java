@@ -39,7 +39,7 @@ public class DriveBackwardCharge extends CommandBase {
   @Override
   public boolean isFinished() {
     double position = _driveTrain.getPosition();
-    if (position <= -1.65) return true;
+    if (position <= -_driveTrain.getBalanceDistance()) return true;
 
     return false;
     }

@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "name": "/Preferences/Balance.P",
+    "type": "double",
+    "value": 0.33,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Balance.I",
+    "type": "double",
+    "value": 0.0,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Balance.D",
+    "type": "double",
+    "value": 0.01,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Balance.Min",
+    "type": "double",
+    "value": 0.1,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Balance.Max",
+    "type": "double",
+    "value": 0.35,
+    "properties": {
+      "persistent": true
+    }
+  },
+  {
+    "name": "/Preferences/Balance.Distance",
+    "type": "double",
+    "value": 1.65,
+    "properties": {
+      "persistent": true
+    }
+  }
+]
