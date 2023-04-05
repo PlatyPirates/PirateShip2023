@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -40,17 +39,14 @@ public class IntakePivot extends SubsystemBase {
 
   public void stop() {
     _pivotMotor.stopMotor();
-    SmartDashboard.putString("Pivot action", "stop");
   }
 
   public void pivotUp() {
     _pivotMotor.set(-_pivotPower);
-    SmartDashboard.putString("Pivot action", "up");
   }
 
   public void pivotDown() {
     _pivotMotor.set(_pivotPower); 
-    SmartDashboard.putString("Pivot action", "down");
   }
 
   public void setArmPower (double pivotPower) {
@@ -64,7 +60,5 @@ public class IntakePivot extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Pivot Position", _pivotMotor.getEncoder().getPosition());
-    SmartDashboard.putNumber("Pivot Current", _pivotMotor.getOutputCurrent());
   }
 }

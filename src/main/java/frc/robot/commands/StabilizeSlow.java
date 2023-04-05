@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner14;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

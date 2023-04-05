@@ -25,38 +25,13 @@ public class Booty_Intake extends SubsystemBase {
 
   public BootyState _state = BootyState.Off;
 
-  //public double _power = Constants.IntakeConstants.intakeMotorPower;
   /** Creates a new Booty_Intake. */
   public Booty_Intake() {
-    //setDefaultCommand(new RunCommand(this::stop, this));
-
     _intakeMotor.restoreFactoryDefaults(); 
     _intakeMotor.setIdleMode(IdleMode.kBrake);
     _intakeMotor.burnFlash();
 
   }
-
-  public void stop() {
-    //_intakeMotor.stopMotor();
-  }
-  
-  /*
-  public void intakeIn() {
-    _intakeMotor.set(_power);
-  }
-
-  public void intakeOut() {
-    _intakeMotor.set(-_power);
-  }
-
-  public void setPower (double power){
-    _power = power;
-  }
-
-  public double getPower(){
-    return _power;
-  }
-*/
 
   public void setState(BootyState state) {
     _state = state;
@@ -90,9 +65,6 @@ public class Booty_Intake extends SubsystemBase {
     _intakeMotor.set(_power);
     _intakeMotor.setSmartCurrentLimit(currentLimit); 
 
-    SmartDashboard.putNumber("Intake Power", _power);
     SmartDashboard.putString("Intake State", _state.toString()); 
-    SmartDashboard.putNumber("Intake Current", _intakeMotor.getOutputCurrent());
-    SmartDashboard.putNumber("current limit", currentLimit);
   }
 }

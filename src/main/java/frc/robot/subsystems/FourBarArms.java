@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -61,7 +60,5 @@ public class FourBarArms extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Position", _encoder.getPosition());
-    SmartDashboard.putNumber("Arm Current", _armMotor.getOutputCurrent());
   }
 }
