@@ -41,6 +41,9 @@ public final class Constants {
     public static double balancePowerMin = 0.1;
     public static double balancePowerMax = 0.35;
     public static double balanceDistance = 1.65;
+    public static double balanceDistanceShort = 1.3;
+    public static double autoTurnPower = 0.3;
+    public static double mobilityDistance = 3.8;
   }
 
   public static final class IntakeConstants {

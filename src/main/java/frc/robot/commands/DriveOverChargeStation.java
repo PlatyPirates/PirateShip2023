@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive_Train;
 
-public class DriveBackwardCharge extends CommandBase {
+public class DriveOverChargeStation extends CommandBase {
   private final Drive_Train _driveTrain;
 
   /** Creates a new DriveForward. */
-  public DriveBackwardCharge(Drive_Train driveTrain) {
+  public DriveOverChargeStation(Drive_Train driveTrain) {
     _driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_driveTrain);
@@ -39,8 +39,8 @@ public class DriveBackwardCharge extends CommandBase {
   @Override
   public boolean isFinished() {
     double position = _driveTrain.getPosition();
-    if (position <= -_driveTrain.getBalanceDistance()) return true;
+    if (position <= -_driveTrain.getMobilityDistance()) return true;
 
     return false;
-    }
+  }
 }

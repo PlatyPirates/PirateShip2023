@@ -45,6 +45,9 @@ public class Drive_Train extends SubsystemBase {
   private double _balancePowerMin = DrivetrainConstants.balancePowerMin;
   private double _balancePowerMax = DrivetrainConstants.balancePowerMax;
   private double _balanceDistance = DrivetrainConstants.balanceDistance;
+  private double _mobilityDistance = DrivetrainConstants.mobilityDistance;
+  private double _autoTurnPower = DrivetrainConstants.autoTurnPower;
+  private double _balanceDistanceShort = DrivetrainConstants.balanceDistanceShort;
 
   public Drive_Train(AHRS gyro) {
 
@@ -130,7 +133,10 @@ public class Drive_Train extends SubsystemBase {
     _balancePID.setD(Settings.getLiveDouble("Balance", "D", DrivetrainConstants.balancePID.getD()));
     _balancePowerMin = Settings.getLiveDouble("Balance", "Min", DrivetrainConstants.balancePowerMin);
     _balancePowerMax = Settings.getLiveDouble("Balance", "Max", DrivetrainConstants.balancePowerMax);
-    _balanceDistance = Settings.getLiveDouble("Balance", "Distsance", DrivetrainConstants.balanceDistance);
+    _balanceDistance = Settings.getLiveDouble("Balance", "Distance", DrivetrainConstants.balanceDistance);
+    _mobilityDistance = Settings.getLiveDouble("Balance", "Mobility", DrivetrainConstants.mobilityDistance);
+    _autoTurnPower = Settings.getLiveDouble("Auto", "TurnPower", DrivetrainConstants.autoTurnPower);
+    _balanceDistanceShort = Settings.getLiveDouble("Balance", "DistanceShort", DrivetrainConstants.balanceDistanceShort);
   }
 
   public void encoderReset() {
@@ -201,5 +207,29 @@ public class Drive_Train extends SubsystemBase {
 
   public double getBalanceDistance() {
     return _balanceDistance;
+  }
+  
+  public void setMobilityDistance(double distance) {
+    _mobilityDistance = distance;
+  }
+
+  public double getMobilityDistance() {
+    return _mobilityDistance;
+  }
+
+  public void setAutoTurnPower(double power) {
+    _autoTurnPower = power;
+  }
+
+  public double getAutoTurnPower() {
+    return _autoTurnPower;
+  }
+
+  public void setBalanceDistanceShort(double distance) {
+    _balanceDistanceShort = distance;
+  }
+
+  public double getBalanceDistanceShort() {
+    return _balanceDistanceShort;
   }
 }

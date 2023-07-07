@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive_Train;
 
-public class DriveBackwardCharge extends CommandBase {
+public class DriveBackwardChargeShort extends CommandBase {
   private final Drive_Train _driveTrain;
 
   /** Creates a new DriveForward. */
-  public DriveBackwardCharge(Drive_Train driveTrain) {
+  public DriveBackwardChargeShort(Drive_Train driveTrain) {
     _driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_driveTrain);
@@ -26,7 +26,7 @@ public class DriveBackwardCharge extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    _driveTrain.drive(0.55, 0);
+    _driveTrain.drive(0.5, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -39,7 +39,7 @@ public class DriveBackwardCharge extends CommandBase {
   @Override
   public boolean isFinished() {
     double position = _driveTrain.getPosition();
-    if (position <= -_driveTrain.getBalanceDistance()) return true;
+    if (position <= -_driveTrain.getBalanceDistanceShort()) return true;
 
     return false;
     }
